@@ -57,4 +57,28 @@ export interface MarketKemonomimi extends Kemonomimi {
 export interface FamilyTreeNode {
   kemonomimi: Kemonomimi;
   children: FamilyTreeNode[];
+}
+
+export interface Achievement {
+  id: string;
+  name: string;
+  description: string;
+  condition: string;
+  icon: string;
+  unlocked: boolean;
+  unlockedDate?: string;
+  progress?: number;
+  maxProgress?: number;
+}
+
+export interface GameStats {
+  totalKemonomimi: number;
+  totalBreedings: number;
+  totalTrainings: number;
+  totalCoinsEarned: number;
+  totalCoinsSpent: number;
+  daysSurvived: number;
+  highestStatKemonomimi: Kemonomimi | null;
+  mostTrainedKemonomimi: Kemonomimi | null;
+  oldestKemonomimi: Kemonomimi | null;
 } 

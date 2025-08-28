@@ -7,7 +7,10 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "test:run": "echo 'No tests configured yet - add test framework to run tests'",
+    "ci": "npm run lint && npm run type-check && npm run test:run && npm run build"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.1.11",

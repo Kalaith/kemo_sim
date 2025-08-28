@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useGameStore } from '../hooks/useGameStore';
 import KemonoModal from '../components/KemonoModal';
-import { getKemonoImage } from '../utils/imageMap';
 import type { Kemonomimi } from '../types/game';
 
 export default function CollectionPage() {
@@ -32,35 +31,41 @@ export default function CollectionPage() {
 
   return (
     <section>
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-primary">Your Kemonomimi Collection</h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6" style={{color: 'var(--kemo-primary)'}}>Your Kemonomimi Collection</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {kemonomimi.length === 0 ? (
-          <div className="col-span-full text-center text-gray-400">No kemonomimi in your collection.</div>
+          <div className="col-span-full text-center" style={{color: 'var(--kemo-text-muted)'}}>No kemonomimi in your collection.</div>
         ) : (
           kemonomimi.map((k) => (
             <div
               key={k.id}
-              className="bg-surface rounded-xl shadow-md p-4 flex flex-col items-center hover:shadow-lg transition cursor-pointer border border-primary/20 hover:border-primary"
+              className="kemo-card p-4 flex flex-col items-center cursor-pointer border-2 transition-all duration-300"
+              style={{
+                borderColor: selectedParent1 === k.id || selectedParent2 === k.id ? 'var(--kemo-primary)' : 'transparent'
+              }}
               onClick={() => setSelected(k.id)}
             >
-              <img
-                src={getKemonoImage(k.type.name, k.id)}
-                alt={k.type.name}
-                className="w-20 h-20 object-cover rounded-full border-2 border-primary/30 mb-3 shadow-sm"
-                loading="lazy"
-              />
+              <div 
+                className="w-20 h-20 rounded-full border-3 mb-3 shadow-lg flex items-center justify-center text-4xl"
+                style={{
+                  borderColor: 'var(--kemo-primary-light)',
+                  backgroundColor: 'var(--kemo-primary-bg)'
+                }}
+              >
+                {k.type.emoji || '🐾'}
+              </div>
               <div className="flex flex-col items-center w-full">
-                <span className="font-bold text-lg md:text-xl text-primary mb-1">{k.name}</span>
-                <span className="text-xs text-gray-500 mb-2">{k.type.name}</span>
+                <span className="font-bold text-lg md:text-xl mb-1" style={{color: 'var(--kemo-primary)'}}>{k.name}</span>
+                <span className="text-xs mb-2" style={{color: 'var(--kemo-text-secondary)'}}>{k.type.name}</span>
                 <div className="grid grid-cols-3 gap-1 text-xs w-full mb-2">
                   {Object.entries(k.stats).map(([stat, value]) => (
                     <div key={stat} className="flex flex-col items-center">
-                      <span className="text-gray-400">{stat}</span>
-                      <span className="font-semibold">{String(value)}</span>
+                      <span style={{color: 'var(--kemo-text-muted)', fontSize: '10px'}}>{stat}</span>
+                      <span className="font-semibold" style={{color: 'var(--kemo-text-primary)'}}>{String(value)}</span>
                     </div>
                   ))}
                 </div>
-                <div className="mt-1 text-xs text-accent font-medium">{k.status}</div>
+                <div className="mt-1 text-xs font-medium px-2 py-1 rounded-full" style={{color: 'var(--kemo-accent)', backgroundColor: 'var(--kemo-accent-bg)'}}>{k.status}</div>
               </div>
             </div>
           ))

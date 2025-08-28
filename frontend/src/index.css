@@ -1,61 +1,244 @@
-@import '../../style.css';
-
 @import "tailwindcss";
 
-/* Remove @apply for headings due to Tailwind v4+ issues. Use utility classes in JSX instead. */
-
+/* Kemonomimi Game Color Theme */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
+  /* Primary Colors - Warm and friendly kemonomimi theme */
+  --kemo-primary: #e879f9;        /* Bright magenta */
+  --kemo-primary-dark: #c026d3;   /* Darker magenta */
+  --kemo-primary-light: #f0abfc;  /* Lighter magenta */
+  --kemo-primary-bg: #fdf4ff;     /* Very light magenta background */
+  
+  /* Secondary Colors - Complementary blues and teals */
+  --kemo-secondary: #06b6d4;      /* Cyan */
+  --kemo-secondary-dark: #0891b2; /* Dark cyan */
+  --kemo-secondary-light: #67e8f9; /* Light cyan */
+  --kemo-secondary-bg: #f0fdff;   /* Very light cyan background */
+  
+  /* Accent Colors - Warm oranges and pinks */
+  --kemo-accent: #f97316;         /* Orange */
+  --kemo-accent-dark: #ea580c;    /* Dark orange */
+  --kemo-accent-light: #fed7aa;   /* Light orange */
+  --kemo-accent-bg: #fff7ed;      /* Very light orange background */
+  
+  /* Success/Achievement Colors */
+  --kemo-success: #22c55e;        /* Green */
+  --kemo-success-dark: #16a34a;   /* Dark green */
+  --kemo-success-light: #bbf7d0;  /* Light green */
+  --kemo-success-bg: #f0fdf4;     /* Very light green background */
+  
+  /* Warning Colors */
+  --kemo-warning: #eab308;        /* Yellow */
+  --kemo-warning-dark: #ca8a04;   /* Dark yellow */
+  --kemo-warning-light: #fef3c7;  /* Light yellow */
+  --kemo-warning-bg: #fffbeb;     /* Very light yellow background */
+  
+  /* Error Colors */
+  --kemo-error: #ef4444;          /* Red */
+  --kemo-error-dark: #dc2626;     /* Dark red */
+  --kemo-error-light: #fecaca;    /* Light red */
+  --kemo-error-bg: #fef2f2;       /* Very light red background */
+  
+  /* Neutral Colors - Modern and clean */
+  --kemo-gray-50: #f8fafc;
+  --kemo-gray-100: #f1f5f9;
+  --kemo-gray-200: #e2e8f0;
+  --kemo-gray-300: #cbd5e1;
+  --kemo-gray-400: #94a3b8;
+  --kemo-gray-500: #64748b;
+  --kemo-gray-600: #475569;
+  --kemo-gray-700: #334155;
+  --kemo-gray-800: #1e293b;
+  --kemo-gray-900: #0f172a;
+  
+  /* Background Colors */
+  --kemo-bg-primary: #fefefe;     /* Pure white background */
+  --kemo-bg-secondary: #f8fafc;   /* Light gray background */
+  --kemo-bg-tertiary: #f1f5f9;    /* Slightly darker gray background */
+  
+  /* Text Colors */
+  --kemo-text-primary: #0f172a;   /* Dark text */
+  --kemo-text-secondary: #475569; /* Medium gray text */
+  --kemo-text-muted: #64748b;     /* Light gray text */
+  
+  /* Border Colors */
+  --kemo-border-light: #e2e8f0;
+  --kemo-border-medium: #cbd5e1;
+  --kemo-border-dark: #94a3b8;
+  
+  /* Font settings */
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.6;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
 body {
   margin: 0;
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background: #f9fafb;
-  color: #222;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background: linear-gradient(135deg, var(--kemo-bg-secondary) 0%, var(--kemo-primary-bg) 100%);
+  color: var(--kemo-text-primary);
+  min-height: 100vh;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  /* @apply text-primary; */
+/* Game-specific component styles */
+.game-header {
+  background: linear-gradient(135deg, var(--kemo-primary) 0%, var(--kemo-secondary) 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 8px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+.game-header h1 {
+  background: linear-gradient(45deg, #ffffff, #f0abfc);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.stat-item {
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 0.75rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat-label {
+  color: rgba(255, 255, 255, 0.8) !important;
+  font-size: 0.75rem;
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
-button:hover {
-  border-color: #646cff;
+
+.tab-navigation {
+  background: white;
+  padding: 0.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  margin-bottom: 2rem;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+.tab-btn {
+  position: relative;
+  border-radius: 0.75rem !important;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  border: none;
+  padding: 0.75rem 1.5rem;
+}
+
+.tab-btn:not(.active):hover {
+  background: linear-gradient(135deg, var(--kemo-primary-bg), var(--kemo-secondary-bg));
+  color: var(--kemo-primary-dark);
+  transform: translateY(-1px);
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, var(--kemo-primary), var(--kemo-secondary));
+  color: white;
+  box-shadow: 0 4px 14px 0 rgba(224, 121, 249, 0.39);
+}
+
+/* Card Styles */
+.kemo-card {
+  background: white;
+  border-radius: 1rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  border: 1px solid var(--kemo-border-light);
+  transition: all 0.3s ease;
+}
+
+.kemo-card:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  transform: translateY(-2px);
+}
+
+/* Button Styles */
+.btn-primary {
+  background: linear-gradient(135deg, var(--kemo-primary), var(--kemo-primary-dark));
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(224, 121, 249, 0.39);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(224, 121, 249, 0.5);
+}
+
+.btn-secondary {
+  background: linear-gradient(135deg, var(--kemo-secondary), var(--kemo-secondary-dark));
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(6, 182, 212, 0.39);
+}
+
+.btn-secondary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(6, 182, 212, 0.5);
+}
+
+.btn-accent {
+  background: linear-gradient(135deg, var(--kemo-accent), var(--kemo-accent-dark));
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(249, 115, 22, 0.39);
+}
+
+.btn-accent:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(249, 115, 22, 0.5);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, var(--kemo-success), var(--kemo-success-dark));
+  color: white;
+  border: none;
+  border-radius: 0.75rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 14px 0 rgba(34, 197, 94, 0.39);
+}
+
+.btn-success:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px 0 rgba(34, 197, 94, 0.5);
+}
+
+@keyframes slide-in {
+  0% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-in {
+  animation: slide-in 0.3s ease-out;
 }
 
 @media (prefers-color-scheme: light) {

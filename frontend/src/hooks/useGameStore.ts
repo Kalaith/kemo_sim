@@ -1,7 +1,8 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import * as mockApi from '../api/mockApi';
-import type { Kemonomimi, BreedingQueueItem, TrainingQueueItem, MarketKemonomimi } from '../types/game';
+import type { Kemonomimi, BreedingQueueItem, TrainingQueueItem, MarketKemonomimi, Achievement, GameStats } from '../types/game';
+import { ACHIEVEMENTS, checkAchievements, calculateGameStats } from '../utils/achievements';
 
 interface GameState {
   coins: number;
@@ -20,12 +21,26 @@ interface GameState {
   selectedParent2: number | null;
   setSelectedParent1: (id: number | null) => void;
   setSelectedParent2: (id: number | null) => void;
+  // Achievements and Statistics
+  achievements: Achievement[];
+  setAchievements: (achievements: Achievement[]) => void;
+  totalCoinsEarned: number;
+  totalCoinsSpent: number;
+  totalBreedings: number;
+  totalTrainings: number;
   // Methods
   addKemonomimi: (kemono: Kemonomimi) => void;
   setCoins: (coins: number) => void;
+  addCoinsEarned: (amount: number) => void;
+  addCoinsSpent: (amount: number) => void;
+  incrementBreedings: () => void;
+  incrementTrainings: () => void;
   advanceDay: () => void;
   initGameData: () => Promise<void>;
-  // ...add more actions as needed
+  getGameStats: () => GameStats;
+  checkAndUpdateAchievements: () => void;
+  exportGameData: () => string;
+  importGameData: (data: string) => boolean;
 }
 
 export const useGameStore = create<GameState>()(
@@ -47,9 +62,98 @@ export const useGameStore = create<GameState>()(
       selectedParent2: null,
       setSelectedParent1: (id) => set(() => ({ selectedParent1: id })),
       setSelectedParent2: (id) => set(() => ({ selectedParent2: id })),
-      addKemonomimi: (kemono) => set((state) => ({ kemonomimi: [...state.kemonomimi, kemono] })),
+      // Achievements and Statistics
+      achievements: [...ACHIEVEMENTS],
+      setAchievements: (achievements) => set(() => ({ achievements })),
+      totalCoinsEarned: 0,
+      totalCoinsSpent: 0,
+      totalBreedings: 0,
+      totalTrainings: 0,
+      // Methods
+      addKemonomimi: (kemono) => {
+        set((state) => ({ kemonomimi: [...state.kemonomimi, kemono] }));
+        get().checkAndUpdateAchievements();
+      },
       setCoins: (coins) => set(() => ({ coins })),
-      advanceDay: () => set((state) => ({ day: state.day + 1 })),
+      addCoinsEarned: (amount) => {
+        set((state) => ({ 
+          totalCoinsEarned: state.totalCoinsEarned + amount,
+          coins: state.coins + amount 
+        }));
+        get().checkAndUpdateAchievements();
+      },
+      addCoinsSpent: (amount) => {
+        set((state) => ({ 
+          totalCoinsSpent: state.totalCoinsSpent + amount,
+          coins: state.coins - amount 
+        }));
+      },
+      incrementBreedings: () => {
+        set((state) => ({ totalBreedings: state.totalBreedings + 1 }));
+        get().checkAndUpdateAchievements();
+      },
+      incrementTrainings: () => {
+        set((state) => ({ totalTrainings: state.totalTrainings + 1 }));
+        get().checkAndUpdateAchievements();
+      },
+      advanceDay: () => {
+        set((state) => ({ day: state.day + 1 }));
+        get().checkAndUpdateAchievements();
+      },
+      getGameStats: () => {
+        const state = get();
+        return calculateGameStats(
+          state.kemonomimi,
+          state.day,
+          state.totalCoinsEarned,
+          state.totalCoinsSpent,
+          state.totalBreedings,
+          state.totalTrainings
+        );
+      },
+      checkAndUpdateAchievements: () => {
+        const state = get();
+        const stats = state.getGameStats();
+        const updatedAchievements = checkAchievements(state.achievements, stats);
+        if (updatedAchievements !== state.achievements) {
+          set({ achievements: updatedAchievements });
+        }
+      },
+      exportGameData: () => {
+        const state = get();
+        const exportData = {
+          coins: state.coins,
+          day: state.day,
+          kemonomimi: state.kemonomimi,
+          achievements: state.achievements,
+          totalCoinsEarned: state.totalCoinsEarned,
+          totalCoinsSpent: state.totalCoinsSpent,
+          totalBreedings: state.totalBreedings,
+          totalTrainings: state.totalTrainings,
+          nextId: state.nextId,
+          exportDate: new Date().toISOString()
+        };
+        return JSON.stringify(exportData, null, 2);
+      },
+      importGameData: (data: string) => {
+        try {
+          const importData = JSON.parse(data);
+          set({
+            coins: importData.coins || 1000,
+            day: importData.day || 1,
+            kemonomimi: importData.kemonomimi || [],
+            achievements: importData.achievements || [...ACHIEVEMENTS],
+            totalCoinsEarned: importData.totalCoinsEarned || 0,
+            totalCoinsSpent: importData.totalCoinsSpent || 0,
+            totalBreedings: importData.totalBreedings || 0,
+            totalTrainings: importData.totalTrainings || 0,
+            nextId: importData.nextId || 1
+          });
+          return true;
+        } catch {
+          return false;
+        }
+      },
       initGameData: async () => {
         if (get().kemonomimi.length === 0) {
           const kemono = await mockApi.fetchKemonomimi();
@@ -59,9 +163,8 @@ export const useGameStore = create<GameState>()(
           const market = await mockApi.fetchMarket();
           set({ marketStock: market });
         }
-        // Jobs are static for now
+        get().checkAndUpdateAchievements();
       },
-      // ...implement more actions as needed
     }),
     {
       name: 'kemonomimi-game', // storage key
@@ -75,6 +178,11 @@ export const useGameStore = create<GameState>()(
         nextId: state.nextId,
         selectedParent1: state.selectedParent1,
         selectedParent2: state.selectedParent2,
+        achievements: state.achievements,
+        totalCoinsEarned: state.totalCoinsEarned,
+        totalCoinsSpent: state.totalCoinsSpent,
+        totalBreedings: state.totalBreedings,
+        totalTrainings: state.totalTrainings,
       }),
     }
   )

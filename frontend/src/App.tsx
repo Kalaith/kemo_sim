@@ -6,6 +6,8 @@ import BreedingPage from './pages/BreedingPage';
 import TrainingPage from './pages/TrainingPage';
 import MarketplacePage from './pages/MarketplacePage';
 import FamilyTreePage from './pages/FamilyTreePage';
+import StatisticsPage from './pages/StatisticsPage';
+import AchievementToast from './components/AchievementToast';
 import { useGameStore } from './hooks/useGameStore';
 
 const TABS = [
@@ -14,6 +16,7 @@ const TABS = [
   { key: 'training', label: 'Training' },
   { key: 'marketplace', label: 'Marketplace' },
   { key: 'family-tree', label: 'Family Tree' },
+  { key: 'statistics', label: 'Statistics' },
 ];
 
 export default function App() {
@@ -33,25 +36,35 @@ export default function App() {
 
   if (loading || kemonomimi.length === 0 || marketStock.length === 0) {
     return (
-      <div className="min-h-screen flex items-center justify-center text-xl text-gray-500">
-        Loading game data...
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-4 border-solid mx-auto mb-4" style={{
+            borderColor: 'var(--kemo-primary-light)',
+            borderTopColor: 'var(--kemo-primary)'
+          }}></div>
+          <div className="text-xl font-semibold" style={{color: 'var(--kemo-text-secondary)'}}>
+            Loading game data...
+          </div>
+        </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 text-gray-900">
-      <div className="container mx-auto max-w-5xl p-4">
+    <div className="min-h-screen">
+      <div className="container mx-auto max-w-6xl p-6">
         <Header />
         <TabNavigation tabs={TABS} activeTab={activeTab} onTabChange={setActiveTab} />
-        <main className="mt-6">
+        <main>
           {activeTab === 'collection' && <CollectionPage />}
           {activeTab === 'breeding' && <BreedingPage />}
           {activeTab === 'training' && <TrainingPage />}
           {activeTab === 'marketplace' && <MarketplacePage />}
           {activeTab === 'family-tree' && <FamilyTreePage />}
+          {activeTab === 'statistics' && <StatisticsPage />}
         </main>
       </div>
+      <AchievementToast />
     </div>
   );
 }
