@@ -21,6 +21,6 @@
 14. **Education System**: Schools, universities, and skill-learning institutions with progression tracking
 
 ## Technical & Social Features
-18. **Character Export/Import**: Share characters between saves and with other players
+18. **Character Export/Import**: Export characters as JSON files for backup and personal use
 19. **Achievement System**: Complex achievement tracking for character development milestones
 20. **Statistics Dashboard**: Detailed analytics on character development, relationships, and world progress
