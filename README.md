@@ -129,17 +129,15 @@ The project includes a PowerShell deployment script for publishing to web server
 4. Push to the branch: `git push origin feature/amazing-feature`
 5. Open a Pull Request
 
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- Built with modern web technologies
-- Inspired by creature collection and management games
-- Special thanks to the kemonomimi community
-
 ---
 
-**Enjoy your divine journey as the god of kemonomimi!** 🐺🦊🐱</content>
-<parameter name="filePath">H:\WebHatchery\game_apps\kemo_sim\README.md
+**Enjoy your divine journey as the god of kemonomimi!** 🐺🦊🐱
+
+## License
+
+This project is licensed under the MIT License - see the individual component README files for details.
+
+
+**Enjoy your divine journey as the god of kemonomimi!** 🐺🦊🐱
+
+Part of the WebHatchery game collection.</content>
