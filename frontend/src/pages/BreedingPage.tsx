@@ -1,5 +1,5 @@
-import { useGameStore } from '../hooks/useGameStore';
-import type { Kemonomimi } from '../types/game';
+import { useGameStore } from "../hooks/useGameStore";
+import type { Kemonomimi } from "../types/game";
 
 const breedingCost = 200;
 
@@ -18,7 +18,9 @@ export default function BreedingPage() {
   const setNextId = useGameStore((s) => s.setNextId);
 
   // Selectable kemonomimi (available only)
-  const availableKemonomimi = kemonomimi.filter((k) => k.status === 'available');
+  const availableKemonomimi = kemonomimi.filter(
+    (k) => k.status === "available",
+  );
 
   // Get parent objects
   const parent1 = kemonomimi.find((k) => k.id === selectedParent1) || null;
@@ -54,7 +56,10 @@ export default function BreedingPage() {
 
   // Handler for advancing breeding progress (simulate day advance)
   const handleAdvanceBreeding = () => {
-    const updatedQueue = breedingQueue.map((item) => ({ ...item, progress: item.progress + 1 }));
+    const updatedQueue = breedingQueue.map((item) => ({
+      ...item,
+      progress: item.progress + 1,
+    }));
     // If progress >= 3, breeding is done (simulate 3 days)
     const finished = updatedQueue.filter((item) => item.progress >= 3);
     const ongoing = updatedQueue.filter((item) => item.progress < 3);
@@ -63,9 +68,9 @@ export default function BreedingPage() {
       const child: Kemonomimi = {
         ...item.parent1,
         id: nextId + 1,
-        name: 'Newborn',
+        name: "Newborn",
         stats: { ...item.parent1.stats },
-        status: 'available',
+        status: "available",
         parents: [item.parent1.id, item.parent2.id],
         children: [],
         trainedJobs: [],
@@ -78,16 +83,20 @@ export default function BreedingPage() {
 
   return (
     <section>
-      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-primary">Breeding Center</h2>
+      <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-6 text-primary">
+        Breeding Center
+      </h2>
       <div className="space-y-6">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-center">
           <div className="bg-surface rounded-xl p-4 w-full md:w-1/3 border border-primary/20">
             <h3 className="font-semibold mb-2 text-primary">Parent 1</h3>
             <div className="h-20 flex items-center justify-center text-gray-400">
               {parent1 ? (
-                <span className="font-semibold text-primary">{parent1.name}</span>
+                <span className="font-semibold text-primary">
+                  {parent1.name}
+                </span>
               ) : (
-                'Select a kemonomimi'
+                "Select a kemonomimi"
               )}
             </div>
           </div>
@@ -105,9 +114,11 @@ export default function BreedingPage() {
             <h3 className="font-semibold mb-2 text-primary">Parent 2</h3>
             <div className="h-20 flex items-center justify-center text-gray-400">
               {parent2 ? (
-                <span className="font-semibold text-primary">{parent2.name}</span>
+                <span className="font-semibold text-primary">
+                  {parent2.name}
+                </span>
               ) : (
-                'Select a kemonomimi'
+                "Select a kemonomimi"
               )}
             </div>
           </div>
@@ -122,7 +133,9 @@ export default function BreedingPage() {
               <div className="flex items-center gap-2">
                 <span className="text-2xl text-primary">{k.type.emoji}</span>
                 <span className="font-semibold text-primary">{k.name}</span>
-                <span className="text-xs text-gray-400 ml-auto">{k.type.name}</span>
+                <span className="text-xs text-gray-400 ml-auto">
+                  {k.type.name}
+                </span>
               </div>
             </div>
           ))}
@@ -135,14 +148,20 @@ export default function BreedingPage() {
             <div className="space-y-2">
               {breedingQueue.map((item) => (
                 <div key={item.id} className="flex items-center gap-4">
-                  <span className="text-primary">{item.parent1.name} × {item.parent2.name}</span>
+                  <span className="text-primary">
+                    {item.parent1.name} × {item.parent2.name}
+                  </span>
                   <div className="flex-1 h-2 bg-background rounded">
                     <div
                       className="h-2 bg-accent rounded"
-                      style={{ width: `${Math.min(100, (item.progress / 3) * 100)}%` }}
+                      style={{
+                        width: `${Math.min(100, (item.progress / 3) * 100)}%`,
+                      }}
                     />
                   </div>
-                  <span className="text-xs text-gray-500">{item.progress}/3 days</span>
+                  <span className="text-xs text-gray-500">
+                    {item.progress}/3 days
+                  </span>
                 </div>
               ))}
               <button

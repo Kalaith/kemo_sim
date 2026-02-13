@@ -1,8 +1,19 @@
-import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
-import * as mockApi from '../api/mockApi';
-import type { Kemonomimi, BreedingQueueItem, TrainingQueueItem, MarketKemonomimi, Achievement, GameStats } from '../types/game';
-import { ACHIEVEMENTS, checkAchievements, calculateGameStats } from '../utils/achievements';
+import { create } from "zustand";
+import { persist } from "zustand/middleware";
+import * as mockApi from "../api/mockApi";
+import type {
+  Kemonomimi,
+  BreedingQueueItem,
+  TrainingQueueItem,
+  MarketKemonomimi,
+  Achievement,
+  GameStats,
+} from "../types/game";
+import {
+  ACHIEVEMENTS,
+  checkAchievements,
+  calculateGameStats,
+} from "../utils/achievements";
 
 interface GameState {
   coins: number;
@@ -76,16 +87,16 @@ export const useGameStore = create<GameState>()(
       },
       setCoins: (coins) => set(() => ({ coins })),
       addCoinsEarned: (amount) => {
-        set((state) => ({ 
+        set((state) => ({
           totalCoinsEarned: state.totalCoinsEarned + amount,
-          coins: state.coins + amount 
+          coins: state.coins + amount,
         }));
         get().checkAndUpdateAchievements();
       },
       addCoinsSpent: (amount) => {
-        set((state) => ({ 
+        set((state) => ({
           totalCoinsSpent: state.totalCoinsSpent + amount,
-          coins: state.coins - amount 
+          coins: state.coins - amount,
         }));
       },
       incrementBreedings: () => {
@@ -108,13 +119,16 @@ export const useGameStore = create<GameState>()(
           state.totalCoinsEarned,
           state.totalCoinsSpent,
           state.totalBreedings,
-          state.totalTrainings
+          state.totalTrainings,
         );
       },
       checkAndUpdateAchievements: () => {
         const state = get();
         const stats = state.getGameStats();
-        const updatedAchievements = checkAchievements(state.achievements, stats);
+        const updatedAchievements = checkAchievements(
+          state.achievements,
+          stats,
+        );
         if (updatedAchievements !== state.achievements) {
           set({ achievements: updatedAchievements });
         }
@@ -131,7 +145,7 @@ export const useGameStore = create<GameState>()(
           totalBreedings: state.totalBreedings,
           totalTrainings: state.totalTrainings,
           nextId: state.nextId,
-          exportDate: new Date().toISOString()
+          exportDate: new Date().toISOString(),
         };
         return JSON.stringify(exportData, null, 2);
       },
@@ -147,7 +161,7 @@ export const useGameStore = create<GameState>()(
             totalCoinsSpent: importData.totalCoinsSpent || 0,
             totalBreedings: importData.totalBreedings || 0,
             totalTrainings: importData.totalTrainings || 0,
-            nextId: importData.nextId || 1
+            nextId: importData.nextId || 1,
           });
           return true;
         } catch {
@@ -167,7 +181,7 @@ export const useGameStore = create<GameState>()(
       },
     }),
     {
-      name: 'kemonomimi-game', // storage key
+      name: "kemonomimi-game", // storage key
       partialize: (state) => ({
         coins: state.coins,
         day: state.day,
@@ -184,6 +198,6 @@ export const useGameStore = create<GameState>()(
         totalBreedings: state.totalBreedings,
         totalTrainings: state.totalTrainings,
       }),
-    }
-  )
+    },
+  ),
 );
