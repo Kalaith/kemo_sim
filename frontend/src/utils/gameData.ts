@@ -1,6 +1,6 @@
 import type { KemonomimiType, JobCategory } from '../types/game';
 
-export const KEMONOMIMI_TYPES: KemonomimiType[] = [
+export const kemonomimiTypes: KemonomimiType[] = [
   {
     name: 'Nekomimi',
     animal: 'Cat',
@@ -51,7 +51,7 @@ export const KEMONOMIMI_TYPES: KemonomimiType[] = [
   },
 ];
 
-export const JOB_CATEGORIES: JobCategory[] = [
+export const jobCategories: JobCategory[] = [
   {
     name: 'Physical Labor',
     description: 'Construction, farming, mining work',
@@ -110,14 +110,14 @@ export const JOB_CATEGORIES: JobCategory[] = [
   },
 ];
 
-export const HAIR_COLORS = [
+export const hairColors = [
   'Black', 'Brown', 'Blonde', 'Red', 'Silver', 'White', 'Blue', 'Purple', 'Pink', 'Green',
 ];
 
-export const EYE_COLORS = [
+export const eyeColors = [
   'Brown', 'Blue', 'Green', 'Hazel', 'Gray', 'Purple', 'Gold', 'Red', 'Silver',
 ];
 
-export const PERSONALITY_TRAITS = [
+export const personalityTraits = [
   'Playful', 'Serious', 'Shy', 'Outgoing', 'Calm', 'Energetic', 'Mischievous', 'Gentle', 'Bold', 'Wise',
 ];

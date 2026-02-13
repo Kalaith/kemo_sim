@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useGameStore } from '../hooks/useGameStore';
-import { JOB_CATEGORIES } from '../utils/gameData';
+import { jobCategories } from '../utils/gameData';
 import JobModal from '../components/JobModal';
 import type { Kemonomimi } from '../types/game';
 
@@ -18,7 +18,7 @@ export default function TrainingPage() {
 
   // Handler for starting training
   const handleStartTraining = (kemono: Kemonomimi, jobName: string) => {
-    const job = JOB_CATEGORIES.find((j) => j.name === jobName);
+    const job = jobCategories.find((j) => j.name === jobName);
     if (!job || coins < job.trainingCost) return;
     setCoins(coins - job.trainingCost);
     // Mark kemonomimi as training

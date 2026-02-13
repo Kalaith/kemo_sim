@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useGameStore } from '../hooks/useGameStore';
 import type { MarketKemonomimi, Kemonomimi } from '../types/game';
 
-const MARKET_TYPES = [
+const marketTypes = [
   '',
   'Nekomimi',
   'Inumimi',
@@ -74,7 +74,7 @@ export default function MarketplacePage() {
               value={typeFilter}
               onChange={(e) => setTypeFilter(e.target.value)}
             >
-              {MARKET_TYPES.map((type) => (
+              {marketTypes.map((type) => (
                 <option key={type} value={type}>
                   {type ? `${type} (${type === 'Nekomimi' ? 'Cat' : type === 'Inumimi' ? 'Dog' : type === 'Kitsunemimi' ? 'Fox' : type === 'Usagimimi' ? 'Rabbit' : type === 'Ookami' ? 'Wolf' : type === 'Nezumimi' ? 'Mouse' : ''})` : 'All Types'}
                 </option>

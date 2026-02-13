@@ -1,7 +1,7 @@
 import { useGameStore } from '../hooks/useGameStore';
 import type { Kemonomimi } from '../types/game';
 
-const BREEDING_COST = 200;
+const breedingCost = 200;
 
 export default function BreedingPage() {
   const kemonomimi = useGameStore((s) => s.kemonomimi);
@@ -38,8 +38,8 @@ export default function BreedingPage() {
 
   // Handler for starting breeding
   const handleStartBreeding = () => {
-    if (!parent1 || !parent2 || coins < BREEDING_COST) return;
-    setCoins(coins - BREEDING_COST);
+    if (!parent1 || !parent2 || coins < breedingCost) return;
+    setCoins(coins - breedingCost);
     // Add to breeding queue (simulate progress)
     const newProject = {
       id: Date.now(),
@@ -94,12 +94,12 @@ export default function BreedingPage() {
           <div className="flex flex-col items-center gap-2">
             <button
               className="btn btn--primary bg-primary text-white px-4 py-2 rounded disabled:opacity-50"
-              disabled={!parent1 || !parent2 || coins < BREEDING_COST}
+              disabled={!parent1 || !parent2 || coins < breedingCost}
               onClick={handleStartBreeding}
             >
               Start Breeding
             </button>
-            <p className="text-xs text-gray-500">Cost: {BREEDING_COST} coins</p>
+            <p className="text-xs text-gray-500">Cost: {breedingCost} coins</p>
           </div>
           <div className="bg-surface rounded-xl p-4 w-full md:w-1/3 border border-primary/20">
             <h3 className="font-semibold mb-2 text-primary">Parent 2</h3>
