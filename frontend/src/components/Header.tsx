@@ -1,9 +1,9 @@
-import { useGameStore } from "../hooks/useGameStore";
+import { useGameStore } from '../hooks/useGameStore';
 
 export default function Header() {
-  const coins = useGameStore((s) => s.coins);
-  const day = useGameStore((s) => s.day);
-  const collectionCount = useGameStore((s) => s.kemonomimi.length);
+  const coins = useGameStore(s => s.coins);
+  const day = useGameStore(s => s.day);
+  const collectionCount = useGameStore(s => s.kemonomimi.length);
 
   return (
     <header className="game-header flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
@@ -23,10 +23,7 @@ export default function Header() {
         </div>
         <div className="stat-item flex flex-col items-center">
           <span className="stat-label text-xs text-gray-500">Collection</span>
-          <span
-            className="font-semibold text-lg"
-            data-testid="collection-count"
-          >
+          <span className="font-semibold text-lg" data-testid="collection-count">
             {collectionCount}
           </span>
         </div>

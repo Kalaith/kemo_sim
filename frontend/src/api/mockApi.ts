@@ -1,12 +1,12 @@
-import type { Kemonomimi, JobCategory, MarketKemonomimi } from "../types/game";
-import { kemonomimiTypes, jobCategories } from "../utils/gameData";
+import type { Kemonomimi, JobCategory, MarketKemonomimi } from '../types/game';
+import { kemonomimiTypes, jobCategories } from '../utils/gameData';
 
 // Generate mock kemonomimi
 export async function fetchKemonomimi(): Promise<Kemonomimi[]> {
   return [
     {
       id: 1,
-      name: "Akiyama",
+      name: 'Akiyama',
       type: kemonomimiTypes[0],
       stats: {
         strength: 40,
@@ -16,11 +16,11 @@ export async function fetchKemonomimi(): Promise<Kemonomimi[]> {
         endurance: 50,
         loyalty: 45,
       },
-      hairColor: "Black",
-      eyeColor: "Blue",
-      personality: "Playful",
+      hairColor: 'Black',
+      eyeColor: 'Blue',
+      personality: 'Playful',
       age: 19,
-      status: "available",
+      status: 'available',
       trainedJobs: [],
       parents: null,
       children: [],
@@ -28,7 +28,7 @@ export async function fetchKemonomimi(): Promise<Kemonomimi[]> {
     },
     {
       id: 2,
-      name: "Yukiko",
+      name: 'Yukiko',
       type: kemonomimiTypes[1],
       stats: {
         strength: 65,
@@ -38,12 +38,12 @@ export async function fetchKemonomimi(): Promise<Kemonomimi[]> {
         endurance: 70,
         loyalty: 85,
       },
-      hairColor: "Brown",
-      eyeColor: "Green",
-      personality: "Gentle",
+      hairColor: 'Brown',
+      eyeColor: 'Green',
+      personality: 'Gentle',
       age: 21,
-      status: "available",
-      trainedJobs: ["Physical Labor"],
+      status: 'available',
+      trainedJobs: ['Physical Labor'],
       parents: null,
       children: [],
       price: 250,
@@ -59,7 +59,7 @@ export async function fetchMarket(): Promise<MarketKemonomimi[]> {
   return [
     {
       id: 101,
-      name: "Miko",
+      name: 'Miko',
       type: kemonomimiTypes[2],
       stats: {
         strength: 45,
@@ -69,11 +69,11 @@ export async function fetchMarket(): Promise<MarketKemonomimi[]> {
         endurance: 55,
         loyalty: 40,
       },
-      hairColor: "Red",
-      eyeColor: "Gold",
-      personality: "Mischievous",
+      hairColor: 'Red',
+      eyeColor: 'Gold',
+      personality: 'Mischievous',
       age: 18,
-      status: "available",
+      status: 'available',
       trainedJobs: [],
       parents: null,
       children: [],
@@ -81,7 +81,7 @@ export async function fetchMarket(): Promise<MarketKemonomimi[]> {
     },
     {
       id: 102,
-      name: "Rei",
+      name: 'Rei',
       type: kemonomimiTypes[3],
       stats: {
         strength: 35,
@@ -91,11 +91,11 @@ export async function fetchMarket(): Promise<MarketKemonomimi[]> {
         endurance: 60,
         loyalty: 60,
       },
-      hairColor: "Silver",
-      eyeColor: "Purple",
-      personality: "Calm",
+      hairColor: 'Silver',
+      eyeColor: 'Purple',
+      personality: 'Calm',
       age: 20,
-      status: "available",
+      status: 'available',
       trainedJobs: [],
       parents: null,
       children: [],

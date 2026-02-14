@@ -1,30 +1,28 @@
-import { useGameStore } from "../hooks/useGameStore";
-import type { Kemonomimi } from "../types/game";
+import { useGameStore } from '../hooks/useGameStore';
+import type { Kemonomimi } from '../types/game';
 
 const breedingCost = 200;
 
 export default function BreedingPage() {
-  const kemonomimi = useGameStore((s) => s.kemonomimi);
-  const coins = useGameStore((s) => s.coins);
-  const setCoins = useGameStore((s) => s.setCoins);
-  const selectedParent1 = useGameStore((s) => s.selectedParent1);
-  const selectedParent2 = useGameStore((s) => s.selectedParent2);
-  const setSelectedParent1 = useGameStore((s) => s.setSelectedParent1);
-  const setSelectedParent2 = useGameStore((s) => s.setSelectedParent2);
-  const breedingQueue = useGameStore((s) => s.breedingQueue);
-  const setBreedingQueue = useGameStore((s) => s.setBreedingQueue);
-  const addKemonomimi = useGameStore((s) => s.addKemonomimi);
-  const nextId = useGameStore((s) => s.nextId);
-  const setNextId = useGameStore((s) => s.setNextId);
+  const kemonomimi = useGameStore(s => s.kemonomimi);
+  const coins = useGameStore(s => s.coins);
+  const setCoins = useGameStore(s => s.setCoins);
+  const selectedParent1 = useGameStore(s => s.selectedParent1);
+  const selectedParent2 = useGameStore(s => s.selectedParent2);
+  const setSelectedParent1 = useGameStore(s => s.setSelectedParent1);
+  const setSelectedParent2 = useGameStore(s => s.setSelectedParent2);
+  const breedingQueue = useGameStore(s => s.breedingQueue);
+  const setBreedingQueue = useGameStore(s => s.setBreedingQueue);
+  const addKemonomimi = useGameStore(s => s.addKemonomimi);
+  const nextId = useGameStore(s => s.nextId);
+  const setNextId = useGameStore(s => s.setNextId);
 
   // Selectable kemonomimi (available only)
-  const availableKemonomimi = kemonomimi.filter(
-    (k) => k.status === "available",
-  );
+  const availableKemonomimi = kemonomimi.filter(k => k.status === 'available');
 
   // Get parent objects
-  const parent1 = kemonomimi.find((k) => k.id === selectedParent1) || null;
-  const parent2 = kemonomimi.find((k) => k.id === selectedParent2) || null;
+  const parent1 = kemonomimi.find(k => k.id === selectedParent1) || null;
+  const parent2 = kemonomimi.find(k => k.id === selectedParent2) || null;
 
   // Handler for selecting a parent
   const handleSelectParent = (kemono: Kemonomimi) => {
@@ -56,21 +54,21 @@ export default function BreedingPage() {
 
   // Handler for advancing breeding progress (simulate day advance)
   const handleAdvanceBreeding = () => {
-    const updatedQueue = breedingQueue.map((item) => ({
+    const updatedQueue = breedingQueue.map(item => ({
       ...item,
       progress: item.progress + 1,
     }));
     // If progress >= 3, breeding is done (simulate 3 days)
-    const finished = updatedQueue.filter((item) => item.progress >= 3);
-    const ongoing = updatedQueue.filter((item) => item.progress < 3);
+    const finished = updatedQueue.filter(item => item.progress >= 3);
+    const ongoing = updatedQueue.filter(item => item.progress < 3);
     // For finished, create new kemonomimi (simple random logic)
-    finished.forEach((item) => {
+    finished.forEach(item => {
       const child: Kemonomimi = {
         ...item.parent1,
         id: nextId + 1,
-        name: "Newborn",
+        name: 'Newborn',
         stats: { ...item.parent1.stats },
-        status: "available",
+        status: 'available',
         parents: [item.parent1.id, item.parent2.id],
         children: [],
         trainedJobs: [],
@@ -92,11 +90,9 @@ export default function BreedingPage() {
             <h3 className="font-semibold mb-2 text-primary">Parent 1</h3>
             <div className="h-20 flex items-center justify-center text-gray-400">
               {parent1 ? (
-                <span className="font-semibold text-primary">
-                  {parent1.name}
-                </span>
+                <span className="font-semibold text-primary">{parent1.name}</span>
               ) : (
-                "Select a kemonomimi"
+                'Select a kemonomimi'
               )}
             </div>
           </div>
@@ -114,17 +110,15 @@ export default function BreedingPage() {
             <h3 className="font-semibold mb-2 text-primary">Parent 2</h3>
             <div className="h-20 flex items-center justify-center text-gray-400">
               {parent2 ? (
-                <span className="font-semibold text-primary">
-                  {parent2.name}
-                </span>
+                <span className="font-semibold text-primary">{parent2.name}</span>
               ) : (
-                "Select a kemonomimi"
+                'Select a kemonomimi'
               )}
             </div>
           </div>
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {availableKemonomimi.map((k) => (
+          {availableKemonomimi.map(k => (
             <div
               key={k.id}
               className="bg-background rounded-lg shadow p-2 flex flex-col items-center cursor-pointer hover:ring-2 hover:ring-accent transition"
@@ -133,9 +127,7 @@ export default function BreedingPage() {
               <div className="flex items-center gap-2">
                 <span className="text-2xl text-primary">{k.type.emoji}</span>
                 <span className="font-semibold text-primary">{k.name}</span>
-                <span className="text-xs text-gray-400 ml-auto">
-                  {k.type.name}
-                </span>
+                <span className="text-xs text-gray-400 ml-auto">{k.type.name}</span>
               </div>
             </div>
           ))}
@@ -146,7 +138,7 @@ export default function BreedingPage() {
             <div className="text-gray-400">No active breeding projects</div>
           ) : (
             <div className="space-y-2">
-              {breedingQueue.map((item) => (
+              {breedingQueue.map(item => (
                 <div key={item.id} className="flex items-center gap-4">
                   <span className="text-primary">
                     {item.parent1.name} × {item.parent2.name}
@@ -159,9 +151,7 @@ export default function BreedingPage() {
                       }}
                     />
                   </div>
-                  <span className="text-xs text-gray-500">
-                    {item.progress}/3 days
-                  </span>
+                  <span className="text-xs text-gray-500">{item.progress}/3 days</span>
                 </div>
               ))}
               <button

@@ -1,11 +1,5 @@
 // Kemonomimi core stats
-export type Stat =
-  | "strength"
-  | "agility"
-  | "intelligence"
-  | "charisma"
-  | "endurance"
-  | "loyalty";
+export type Stat = 'strength' | 'agility' | 'intelligence' | 'charisma' | 'endurance' | 'loyalty';
 
 export interface KemonomimiType {
   name: string;
@@ -25,7 +19,7 @@ export interface Kemonomimi {
   eyeColor: string;
   personality: string;
   age: number;
-  status: "available" | "training" | "breeding" | string;
+  status: 'available' | 'training' | 'breeding' | string;
   trainedJobs: string[];
   parents: number[] | null;
   children: number[];

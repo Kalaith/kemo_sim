@@ -1,5 +1,5 @@
-import { useGameStore } from "../hooks/useGameStore";
-import type { Kemonomimi } from "../types/game";
+import { useGameStore } from '../hooks/useGameStore';
+import type { Kemonomimi } from '../types/game';
 
 interface KemonoModalProps {
   kemonoId: number;
@@ -8,15 +8,8 @@ interface KemonoModalProps {
   onTrain?: (kemono: Kemonomimi) => void;
 }
 
-export default function KemonoModal({
-  kemonoId,
-  onClose,
-  onBreed,
-  onTrain,
-}: KemonoModalProps) {
-  const kemono = useGameStore((s) =>
-    s.kemonomimi.find((k) => k.id === kemonoId),
-  );
+export default function KemonoModal({ kemonoId, onClose, onBreed, onTrain }: KemonoModalProps) {
+  const kemono = useGameStore(s => s.kemonomimi.find(k => k.id === kemonoId));
   if (!kemono) return null;
 
   return (
@@ -26,10 +19,7 @@ export default function KemonoModal({
           <h3 className="text-xl font-bold">
             {kemono.name} - {kemono.type.name}
           </h3>
-          <button
-            onClick={onClose}
-            className="btn btn--outline btn--sm text-xl"
-          >
+          <button onClick={onClose} className="btn btn--outline btn--sm text-xl">
             ×
           </button>
         </div>
@@ -70,16 +60,9 @@ export default function KemonoModal({
               <h4 className="font-semibold">Stats</h4>
               <div className="detailed-stats grid grid-cols-2 gap-2">
                 {Object.entries(kemono.stats).map(([stat, value]) => (
-                  <div
-                    key={stat}
-                    className="detailed-stat flex justify-between"
-                  >
-                    <div className="detailed-stat-name text-gray-500">
-                      {stat}
-                    </div>
-                    <div className="detailed-stat-value font-semibold">
-                      {String(value)}
-                    </div>
+                  <div key={stat} className="detailed-stat flex justify-between">
+                    <div className="detailed-stat-name text-gray-500">{stat}</div>
+                    <div className="detailed-stat-value font-semibold">{String(value)}</div>
                   </div>
                 ))}
               </div>
@@ -102,13 +85,10 @@ export default function KemonoModal({
           </div>
         </div>
         <div className="modal-footer flex gap-2 mt-4">
-          <button
-            onClick={onClose}
-            className="btn btn--secondary px-4 py-2 rounded bg-gray-200"
-          >
+          <button onClick={onClose} className="btn btn--secondary px-4 py-2 rounded bg-gray-200">
             Close
           </button>
-          {kemono.status === "available" && onBreed && (
+          {kemono.status === 'available' && onBreed && (
             <button
               onClick={() => onBreed(kemono)}
               className="btn btn--primary px-4 py-2 rounded bg-blue-600 text-white"
@@ -116,7 +96,7 @@ export default function KemonoModal({
               Select for Breeding
             </button>
           )}
-          {kemono.status === "available" && onTrain && (
+          {kemono.status === 'available' && onTrain && (
             <button
               onClick={() => onTrain(kemono)}
               className="btn btn--primary px-4 py-2 rounded bg-green-600 text-white"

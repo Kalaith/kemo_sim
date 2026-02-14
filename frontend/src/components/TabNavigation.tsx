@@ -9,20 +9,14 @@ interface TabNavigationProps {
   onTabChange: (tab: string) => void;
 }
 
-export default function TabNavigation({
-  tabs,
-  activeTab,
-  onTabChange,
-}: TabNavigationProps) {
+export default function TabNavigation({ tabs, activeTab, onTabChange }: TabNavigationProps) {
   return (
     <nav className="tab-navigation flex gap-2">
-      {tabs.map((tab) => (
+      {tabs.map(tab => (
         <button
           key={tab.key}
-          className={`tab-btn focus:outline-none ${
-            activeTab === tab.key ? "active" : ""
-          }`}
-          aria-current={activeTab === tab.key ? "page" : undefined}
+          className={`tab-btn focus:outline-none ${activeTab === tab.key ? 'active' : ''}`}
+          aria-current={activeTab === tab.key ? 'page' : undefined}
           onClick={() => onTabChange(tab.key)}
         >
           {tab.label}

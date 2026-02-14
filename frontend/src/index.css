@@ -1,4 +1,4 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 /* Kemonomimi Game Color Theme */
 :root {
@@ -66,7 +66,7 @@
   --kemo-border-dark: #94a3b8;
 
   /* Font settings */
-  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.6;
   font-weight: 400;
 
@@ -78,23 +78,15 @@
 
 body {
   margin: 0;
-  font-family: "Inter", system-ui, Avenir, Helvetica, Arial, sans-serif;
-  background: linear-gradient(
-    135deg,
-    var(--kemo-bg-secondary) 0%,
-    var(--kemo-primary-bg) 100%
-  );
+  font-family: 'Inter', system-ui, Avenir, Helvetica, Arial, sans-serif;
+  background: linear-gradient(135deg, var(--kemo-bg-secondary) 0%, var(--kemo-primary-bg) 100%);
   color: var(--kemo-text-primary);
   min-height: 100vh;
 }
 
 /* Game-specific component styles */
 .game-header {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-primary) 0%,
-    var(--kemo-secondary) 100%
-  );
+  background: linear-gradient(135deg, var(--kemo-primary) 0%, var(--kemo-secondary) 100%);
   color: white;
   padding: 1.5rem;
   border-radius: 1rem;
@@ -148,21 +140,13 @@ body {
 }
 
 .tab-btn:not(.active):hover {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-primary-bg),
-    var(--kemo-secondary-bg)
-  );
+  background: linear-gradient(135deg, var(--kemo-primary-bg), var(--kemo-secondary-bg));
   color: var(--kemo-primary-dark);
   transform: translateY(-1px);
 }
 
 .tab-btn.active {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-primary),
-    var(--kemo-secondary)
-  );
+  background: linear-gradient(135deg, var(--kemo-primary), var(--kemo-secondary));
   color: white;
   box-shadow: 0 4px 14px 0 rgba(224, 121, 249, 0.39);
 }
@@ -187,11 +171,7 @@ body {
 
 /* Button Styles */
 .btn-primary {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-primary),
-    var(--kemo-primary-dark)
-  );
+  background: linear-gradient(135deg, var(--kemo-primary), var(--kemo-primary-dark));
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -207,11 +187,7 @@ body {
 }
 
 .btn-secondary {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-secondary),
-    var(--kemo-secondary-dark)
-  );
+  background: linear-gradient(135deg, var(--kemo-secondary), var(--kemo-secondary-dark));
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -227,11 +203,7 @@ body {
 }
 
 .btn-accent {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-accent),
-    var(--kemo-accent-dark)
-  );
+  background: linear-gradient(135deg, var(--kemo-accent), var(--kemo-accent-dark));
   color: white;
   border: none;
   border-radius: 0.75rem;
@@ -247,11 +219,7 @@ body {
 }
 
 .btn-success {
-  background: linear-gradient(
-    135deg,
-    var(--kemo-success),
-    var(--kemo-success-dark)
-  );
+  background: linear-gradient(135deg, var(--kemo-success), var(--kemo-success-dark));
   color: white;
   border: none;
   border-radius: 0.75rem;
