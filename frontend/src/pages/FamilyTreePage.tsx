@@ -1,4 +1,5 @@
 import { useGameStore } from '../hooks/useGameStore';
+import { KemonoAvatar } from '../components/KemonoAvatar';
 import type { Kemonomimi } from '../types/game';
 
 function renderFamilyTree(kemono: Kemonomimi, allKemono: Kemonomimi[], depth = 0) {
@@ -6,7 +7,14 @@ function renderFamilyTree(kemono: Kemonomimi, allKemono: Kemonomimi[], depth = 0
   return (
     <div className="ml-4 border-l-2 border-gray-200 pl-4 mt-2" key={kemono.id}>
       <div className="flex items-center gap-2">
-        <span className="text-2xl">{kemono.type.emoji}</span>
+        <KemonoAvatar
+          typeName={kemono.type.name}
+          index={kemono.id}
+          emoji={kemono.type.emoji}
+          alt={`${kemono.name} portrait`}
+          className="w-7 h-7 rounded-full border border-[var(--kemo-primary-light)] bg-[var(--kemo-primary-bg)] flex-shrink-0"
+          imageClassName="object-cover"
+        />
         <span className="font-semibold">{kemono.name}</span>
         <span className="text-xs text-gray-400">{kemono.type.name}</span>
       </div>

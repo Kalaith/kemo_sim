@@ -1,26 +1,54 @@
-# Future Improvements - Kemo Sim
+# Practical Future Improvements - Kemo Sim
 
-## Character Simulation Enhancement
-1. **Advanced AI Personalities**: Complex personality systems with mood variations and relationship dynamics
-2. **Life Simulation Depth**: Detailed daily routines, hobbies, career progression, and personal goals
-3. **Social Interaction System**: Rich dialogue trees with relationship consequences and memory systems
-4. **Emotional Intelligence**: Characters with emotional needs, responses to player actions, and growth
-5. **Character Customization**: Extensive appearance customization with genetic inheritance systems
+This version is tailored for the current lightweight build in `frontend/`.
+The focus is to make the existing loops feel complete, reliable, and expandable.
 
-## World Building & Environments
-6. **Dynamic World Events**: Seasonal festivals, natural disasters, and social events affecting all characters
-7. **Career Systems**: Multiple career paths with progression, skill requirements, and economic impact
-8. **Housing & Decoration**: Detailed home customization and interior design with functional furniture
-9. **Community Building**: Establish and manage neighborhoods, clubs, and social groups
-10. **Transportation Network**: Various travel methods affecting character interactions and exploration
+## 1) Core Game Loop Stability
+1. **Fix mutable state bugs in breeding/training**
+   - Stop mutating Kemonomimi objects directly inside queue updates.
+   - Use immutable updates in Zustand so achievements and save data stay consistent.
+2. **Fix ID and progression correctness**
+   - Resolve inconsistent ID increment path for offspring.
+   - Ensure queue completion, state updates, and coin deductions are atomic.
+3. **Add guardrails for invalid actions**
+   - Missing parents, insufficient coins, missing selected kemonomimi, duplicate job start.
+   - Show inline messages instead of failing silently.
 
-## Gameplay Mechanics
-11. **Genetics & Breeding**: Complex genetic systems for offspring with trait inheritance and mutations
-12. **Age Progression**: Realistic aging with life stage transitions and generational gameplay
-13. **Health & Wellness**: Physical and mental health systems requiring attention and care
-14. **Education System**: Schools, universities, and skill-learning institutions with progression tracking
+## 2) Meaningful Day Progression
+4. **Advance-day consequences**
+   - Day advances should age all kemonomimi, unlock training/breeding status transitions, and update coin balance.
+5. **Breeding result variety (simple)**
+   - Add visible trait/stat inheritance from parents (even simple averaging + random jitter).
+   - Show outcome preview and completion summary.
+6. **Training payoff**
+   - Training should produce noticeable stat/job effects, not just progress bars.
 
-## Technical & Social Features
-18. **Character Export/Import**: Export characters as JSON files for backup and personal use
-19. **Achievement System**: Complex achievement tracking for character development milestones
-20. **Statistics Dashboard**: Detailed analytics on character development, relationships, and world progress
+## 3) UX and Discovery Polish
+7. **Collection and market filters**
+   - Add search/sort/filter by type, name, status, and trait.
+   - Sort by age, price, and total stat score.
+8. **Consistent loading/empty/error states**
+   - Replace blank screens with clear state-specific cards and recovery actions.
+9. **Onboarding for new players**
+   - Add a short “Getting Started” flow for first-time users.
+
+## 4) Save and Data Safety
+10. **Versioned save format**
+    - Add `saveVersion` and migration checks.
+11. **Safer import/export**
+    - Validate imported JSON before applying.
+    - Add clear errors and avoid partial writes.
+12. **Snapshot management**
+    - Add quick backup + reset-to-default options.
+
+## 5) Minimal QA Foundation
+13. **Store-level tests**
+    - Unit tests for breeding completion, training completion, import/export, and guard conditions.
+14. **Performance and accessibility pass**
+    - Measure heavy lists (collection/market/family tree) and add basic rendering and ARIA checks.
+
+## Immediate Next 6 Weeks
+- Week 1–2: Core Loop Stability + Guards
+- Week 3–4: Day progression + training/breeding payoffs
+- Week 5: UX and filtering
+- Week 6: Save safety + tests + release checklist

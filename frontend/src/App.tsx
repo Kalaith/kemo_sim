@@ -19,22 +19,74 @@ const TABS = [
   { key: 'statistics', label: 'Statistics' },
 ];
 
+const ONBOARDING_SESSION_KEY = 'kemo-sim:onboarding-seen';
+
 export default function App() {
   const [activeTab, setActiveTab] = useState('collection');
   const initGameData = useGameStore(s => s.initGameData);
+  const resetGameData = useGameStore(s => s.resetGameData);
+  const loadError = useGameStore(s => s.loadError);
   const kemonomimi = useGameStore(s => s.kemonomimi);
   const marketStock = useGameStore(s => s.marketStock);
   const [loading, setLoading] = useState(true);
+  const [onboardingVisible, setOnboardingVisible] = useState(false);
 
   useEffect(() => {
     (async () => {
-      await initGameData();
-      setLoading(false);
+      setLoading(true);
+      try {
+        await initGameData();
+      } finally {
+        setLoading(false);
+      }
     })();
-    // eslint-disable-next-line
-  }, []);
+  }, [initGameData]);
 
-  if (loading || kemonomimi.length === 0 || marketStock.length === 0) {
+  useEffect(() => {
+    if (!loading) {
+      if (typeof window !== 'undefined') {
+        setOnboardingVisible(window.sessionStorage.getItem(ONBOARDING_SESSION_KEY) !== '1');
+      } else {
+        setOnboardingVisible(false);
+      }
+    }
+  }, [loading]);
+
+  const dismissOnboarding = () => {
+    if (typeof window !== 'undefined') {
+      window.sessionStorage.setItem(ONBOARDING_SESSION_KEY, '1');
+    }
+    setOnboardingVisible(false);
+  };
+
+  if (loadError) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center bg-white rounded-xl p-8 shadow">
+          <h1 className="text-2xl font-bold text-red-700 mb-4">Something went wrong</h1>
+          <p className="text-gray-700 mb-4">{loadError}</p>
+          <button
+            className="btn btn--secondary bg-secondary text-white px-4 py-2 rounded"
+            onClick={async () => {
+              await initGameData();
+            }}
+          >
+            Retry
+          </button>
+          <button
+            className="btn btn--secondary bg-gray-700 text-white px-4 py-2 rounded"
+            onClick={async () => {
+              await resetGameData();
+            }}
+          >
+            Reset to Defaults
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
@@ -48,6 +100,27 @@ export default function App() {
           <div className="text-xl font-semibold" style={{ color: 'var(--kemo-text-secondary)' }}>
             Loading game data...
           </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (kemonomimi.length === 0 || marketStock.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center bg-white rounded-xl p-8 shadow">
+          <h1 className="text-2xl font-bold mb-4">Game data is not available</h1>
+          <p className="text-gray-700 mb-4">
+            Unable to load a valid starting dataset. You can retry loading or reset to defaults.
+          </p>
+          <button
+            className="btn btn--secondary bg-secondary text-white px-4 py-2 rounded"
+            onClick={async () => {
+              await initGameData();
+            }}
+          >
+            Retry
+          </button>
         </div>
       </div>
     );
@@ -67,6 +140,36 @@ export default function App() {
           {activeTab === 'statistics' && <StatisticsPage />}
         </main>
       </div>
+      {onboardingVisible && (
+        <div className="fixed inset-0 bg-black/60 flex items-center justify-center p-4 z-50">
+          <div className="bg-white rounded-xl p-6 max-w-lg relative">
+            <button
+              type="button"
+              aria-label="Close welcome message"
+              className="absolute top-3 right-3 text-gray-400 hover:text-gray-600"
+              onClick={dismissOnboarding}
+            >
+              ✕
+            </button>
+            <h3 className="text-xl font-bold mb-2">Welcome to Kemo Sim</h3>
+            <p className="text-sm text-gray-700 mb-4">
+              Start by purchasing or breeding kemonomimi, send one to train, and use Advance Day to apply
+              queue progress and age your collection.
+            </p>
+            <ul className="text-sm list-disc pl-5 mb-6 space-y-1">
+              <li>Training gives stat progress and coin rewards.</li>
+              <li>Breeding can create offspring with inherited traits.</li>
+              <li>Use marketplace to expand your collection.</li>
+            </ul>
+            <button
+              className="btn btn--secondary bg-secondary text-white px-4 py-2 rounded"
+              onClick={dismissOnboarding}
+            >
+              Got it
+            </button>
+          </div>
+        </div>
+      )}
       <AchievementToast />
     </div>
   );

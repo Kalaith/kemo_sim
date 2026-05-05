@@ -1,6 +1,20 @@
 // Kemonomimi core stats
 export type Stat = 'strength' | 'agility' | 'intelligence' | 'charisma' | 'endurance' | 'loyalty';
 
+export type KemonomimiStatus = 'available' | 'training' | 'breeding';
+
+export interface ActionResult {
+  success: boolean;
+  message?: string;
+}
+
+export interface DayAdvanceResult {
+  completedBreedings: number;
+  completedTrainings: number;
+  earnedCoins: number;
+  logs: string[];
+}
+
 export interface KemonomimiType {
   name: string;
   animal: string;
@@ -19,7 +33,7 @@ export interface Kemonomimi {
   eyeColor: string;
   personality: string;
   age: number;
-  status: 'available' | 'training' | 'breeding' | string;
+  status: KemonomimiStatus;
   trainedJobs: string[];
   parents: number[] | null;
   children: number[];
@@ -37,15 +51,17 @@ export interface JobCategory {
 
 export interface BreedingQueueItem {
   id: number;
-  parent1: Kemonomimi;
-  parent2: Kemonomimi;
+  parent1Id: number;
+  parent2Id: number;
   progress: number;
-  result?: Kemonomimi;
+  expectedStats?: Record<Stat, number>;
+  expectedTraits?: string[];
+  expectedType?: string;
 }
 
 export interface TrainingQueueItem {
   id: number;
-  kemonomimi: Kemonomimi;
+  kemonomimiId: number;
   job: JobCategory;
   progress: number;
 }
@@ -81,4 +97,26 @@ export interface GameStats {
   highestStatKemonomimi: Kemonomimi | null;
   mostTrainedKemonomimi: Kemonomimi | null;
   oldestKemonomimi: Kemonomimi | null;
+}
+
+export interface GameSaveData {
+  saveVersion: number;
+  saveDate: string;
+  coins: number;
+  day: number;
+  kemonomimi: Kemonomimi[];
+  breedingQueue: BreedingQueueItem[];
+  trainingQueue: TrainingQueueItem[];
+  marketStock: MarketKemonomimi[];
+  achievements: Achievement[];
+  totalCoinsEarned: number;
+  totalCoinsSpent: number;
+  totalBreedings: number;
+  totalTrainings: number;
+  nextId: number;
+  selectedParent1: number | null;
+  selectedParent2: number | null;
+  hasSeenOnboarding: boolean;
+  lastBackup: string | null;
+  lastDayLogs: string[];
 }

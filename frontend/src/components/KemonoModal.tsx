@@ -1,4 +1,5 @@
 import { useGameStore } from '../hooks/useGameStore';
+import { KemonoAvatar } from './KemonoAvatar';
 import type { Kemonomimi } from '../types/game';
 
 interface KemonoModalProps {
@@ -24,6 +25,16 @@ export default function KemonoModal({ kemonoId, onClose, onBreed, onTrain }: Kem
           </button>
         </div>
         <div className="modal-body space-y-3">
+          <div className="mb-3">
+            <KemonoAvatar
+              typeName={kemono.type.name}
+              index={kemono.id}
+              emoji={kemono.type.emoji}
+              alt={`${kemono.name} portrait`}
+              className="w-16 h-16 rounded-full border border-[var(--kemo-primary-light)] bg-[var(--kemo-primary-bg)]"
+              imageClassName="object-cover"
+            />
+          </div>
           <div className="kemono-info">
             <div className="info-section mb-2">
               <h4 className="font-semibold">Physical Traits</h4>
