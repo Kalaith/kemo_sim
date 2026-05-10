@@ -7,18 +7,28 @@ export default function Header() {
   const collectionCount = useGameStore(s => s.kemonomimi.length);
   const advanceDay = useGameStore(s => s.advanceDay);
   const [daySummary, setDaySummary] = useState<string[]>([]);
+  const [isAdvancing, setIsAdvancing] = useState(false);
 
-  const handleAdvanceDay = () => {
-    const result = advanceDay();
-    setDaySummary(result.logs);
+  const handleAdvanceDay = async () => {
+    setIsAdvancing(true);
+    try {
+      const result = await advanceDay();
+      setDaySummary(result.logs);
+    } finally {
+      setIsAdvancing(false);
+    }
   };
 
   return (
     <header className="game-header flex flex-col gap-4 mb-4">
       <div className="flex items-center justify-between gap-4 flex-wrap">
         <h1 className="text-3xl font-bold">Kemonomimi Breeding Simulator</h1>
-        <button className="btn btn--secondary bg-secondary text-white px-4 py-2 rounded" onClick={handleAdvanceDay}>
-          Advance Day
+        <button
+          className="btn btn--secondary bg-secondary text-white px-4 py-2 rounded disabled:opacity-60"
+          onClick={handleAdvanceDay}
+          disabled={isAdvancing}
+        >
+          {isAdvancing ? 'Advancing...' : 'Advance Day'}
         </button>
       </div>
 

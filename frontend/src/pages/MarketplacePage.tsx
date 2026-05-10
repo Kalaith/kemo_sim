@@ -13,12 +13,10 @@ const SORT_OPTIONS = [
 
 export default function MarketplacePage() {
   const marketStock = useGameStore(s => s.marketStock);
-  const setMarketStock = useGameStore(s => s.setMarketStock);
   const kemonomimi = useGameStore(s => s.kemonomimi);
-  const addKemonomimi = useGameStore(s => s.addKemonomimi);
-  const setKemonomimi = useGameStore(s => s.setKemonomimi);
-  const setCoins = useGameStore(s => s.setCoins);
   const coins = useGameStore(s => s.coins);
+  const buyMarketKemonomimi = useGameStore(s => s.buyMarketKemonomimi);
+  const sellKemonomimi = useGameStore(s => s.sellKemonomimi);
 
   const [activeTab, setActiveTab] = useState<'buy' | 'sell'>('buy');
   const [search, setSearch] = useState('');
@@ -26,6 +24,7 @@ export default function MarketplacePage() {
   const [traitFilter, setTraitFilter] = useState('all');
   const [sortBy, setSortBy] = useState('name');
   const [message, setMessage] = useState('');
+  const [pendingId, setPendingId] = useState<number | null>(null);
 
   const typeOptions = marketTypes;
   const traitOptions = useMemo(() => {
@@ -100,21 +99,29 @@ export default function MarketplacePage() {
     setMessage('');
   };
 
-  const handleBuy = (kemono: MarketKemonomimi) => {
+  const handleBuy = async (kemono: MarketKemonomimi) => {
     if (coins < kemono.price) {
       setMessage('Not enough coins to buy this kemonomimi.');
       return;
     }
-    addKemonomimi({ ...kemono, id: kemono.id, status: 'available' });
-    setMarketStock(marketStock.filter(item => item.id !== kemono.id));
-    setMessage('Purchased successfully.');
+
+    setPendingId(kemono.id);
+    try {
+      const result = await buyMarketKemonomimi(kemono.id);
+      setMessage(result.message ?? (result.success ? 'Purchased successfully.' : 'Purchase failed.'));
+    } finally {
+      setPendingId(null);
+    }
   };
 
-  const handleSell = (kemono: Kemonomimi) => {
-    const sellPrice = kemono.price || 100;
-    setKemonomimi(kemonomimi.filter(item => item.id !== kemono.id));
-    setCoins(coins + sellPrice);
-    setMessage('Sold successfully.');
+  const handleSell = async (kemono: Kemonomimi) => {
+    setPendingId(kemono.id);
+    try {
+      const result = await sellKemonomimi(kemono.id);
+      setMessage(result.message ?? (result.success ? 'Sold successfully.' : 'Sale failed.'));
+    } finally {
+      setPendingId(null);
+    }
   };
 
   return (
@@ -198,9 +205,12 @@ export default function MarketplacePage() {
                   <div className="market-price text-blue-700 font-bold">Price: {k.price} coins</div>
                   <button
                     className="btn btn--primary bg-blue-600 text-white px-3 py-1 rounded"
-                    onClick={() => handleBuy(k)}
+                    onClick={() => {
+                      void handleBuy(k);
+                    }}
+                    disabled={pendingId === k.id}
                   >
-                    Buy
+                    {pendingId === k.id ? 'Buying...' : 'Buy'}
                   </button>
                 </div>
               ))}
@@ -225,8 +235,14 @@ export default function MarketplacePage() {
                     <span className="text-xs text-gray-400 ml-auto">{k.type.name}</span>
                   </div>
                 <div className="market-price text-green-700 font-bold">Sell Price: {k.price || 100} coins</div>
-                <button className="btn btn--primary bg-green-600 text-white px-3 py-1 rounded" onClick={() => handleSell(k)}>
-                  Sell
+                <button
+                  className="btn btn--primary bg-green-600 text-white px-3 py-1 rounded"
+                  onClick={() => {
+                    void handleSell(k);
+                  }}
+                  disabled={pendingId === k.id}
+                >
+                  {pendingId === k.id ? 'Selling...' : 'Sell'}
                 </button>
               </div>
             ))}

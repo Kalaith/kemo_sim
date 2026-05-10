@@ -13,6 +13,7 @@ export default function TrainingPage() {
 
   const [selectedKemono, setSelectedKemono] = useState<Kemonomimi | null>(null);
   const [message, setMessage] = useState('');
+  const [isStarting, setIsStarting] = useState(false);
 
   const availableKemonomimi = kemonomimi.filter(k => k.status === 'available');
   const trainedKemonomimiCount = useMemo(
@@ -23,11 +24,16 @@ export default function TrainingPage() {
   const getKemonomimiName = (kemonomimiId: number) =>
     kemonomimi.find(item => item.id === kemonomimiId)?.name ?? `ID ${kemonomimiId}`;
 
-  const handleStartTraining = (kemono: Kemonomimi, jobName: string) => {
-    const result = startTraining(kemono.id, jobName);
-    setMessage(result.message ?? (result.success ? 'Training started.' : 'Could not start training.'));
-    if (result.success) {
-      setSelectedKemono(null);
+  const handleStartTraining = async (kemono: Kemonomimi, jobName: string) => {
+    setIsStarting(true);
+    try {
+      const result = await startTraining(kemono.id, jobName);
+      setMessage(result.message ?? (result.success ? 'Training started.' : 'Could not start training.'));
+      if (result.success) {
+        setSelectedKemono(null);
+      }
+    } finally {
+      setIsStarting(false);
     }
   };
 
@@ -132,8 +138,16 @@ export default function TrainingPage() {
       {selectedKemono && (
         <JobModal
           kemono={selectedKemono}
-          onSelect={jobName => handleStartTraining(selectedKemono, jobName)}
-          onClose={() => setSelectedKemono(null)}
+          onSelect={jobName => {
+            if (!isStarting) {
+              void handleStartTraining(selectedKemono, jobName);
+            }
+          }}
+          onClose={() => {
+            if (!isStarting) {
+              setSelectedKemono(null);
+            }
+          }}
         />
       )}
     </section>

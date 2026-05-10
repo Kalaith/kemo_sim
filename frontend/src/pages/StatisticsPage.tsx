@@ -31,27 +31,31 @@ export default function StatisticsPage() {
     const reader = new FileReader();
     reader.onload = e => {
       const content = e.target?.result as string;
-      const result = importGameData(content);
-      setImportMessage(result.message ?? 'Import failed.');
-      setFileVersion(v => v + 1);
+      void (async () => {
+        const result = await importGameData(content);
+        setImportMessage(result.message ?? 'Import failed.');
+        setFileVersion(v => v + 1);
+      })();
     };
     reader.readAsText(file);
   };
 
-  const handleBackup = () => {
-    createBackup();
-    setBackupMessage('Backup saved in current session store.');
+  const handleBackup = async () => {
+    const result = await createBackup();
+    setBackupMessage(result.message ?? (result.success ? 'Backup saved to the backend.' : 'Backup failed.'));
   };
 
-  const handleRestoreBackup = () => {
-    const result = restoreBackup();
+  const handleRestoreBackup = async () => {
+    const result = await restoreBackup();
     setBackupMessage(result.message ?? (result.success ? 'Restored backup.' : 'Restore failed.'));
   };
 
   const handleReset = () => {
     if (window.confirm('Reset to default data? This clears queues and resets your progress.')) {
-      resetGameData();
-      setBackupMessage('Game reset to defaults.');
+      void (async () => {
+        await resetGameData();
+        setBackupMessage('Game reset to defaults.');
+      })();
     }
   };
 
@@ -65,10 +69,20 @@ export default function StatisticsPage() {
           <button onClick={handleExport} className="btn-success">
             Export Save Data
           </button>
-          <button onClick={handleBackup} className="btn-secondary">
+          <button
+            onClick={() => {
+              void handleBackup();
+            }}
+            className="btn-secondary"
+          >
             Create Quick Backup
           </button>
-          <button onClick={handleRestoreBackup} className="btn-accent">
+          <button
+            onClick={() => {
+              void handleRestoreBackup();
+            }}
+            className="btn-accent"
+          >
             Restore Quick Backup
           </button>
           <button onClick={handleReset} className="btn-primary">

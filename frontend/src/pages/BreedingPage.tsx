@@ -1,24 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { useGameStore } from '../hooks/useGameStore';
 import { KemonoAvatar } from '../components/KemonoAvatar';
-import type { Kemonomimi, Stat } from '../types/game';
+import type { Kemonomimi } from '../types/game';
 
 const BREEDING_COST = 200;
 const BREEDING_DURATION_DAYS = 3;
-const STATS: Stat[] = ['strength', 'agility', 'intelligence', 'charisma', 'endurance', 'loyalty'];
-
-function createBreedingPreview(parent1: Kemonomimi, parent2: Kemonomimi) {
-  const expectedStats = STATS.reduce((acc, stat) => {
-    acc[stat] = Math.round((parent1.stats[stat] + parent2.stats[stat]) / 2);
-    return acc;
-  }, {} as Record<Stat, number>);
-
-  return {
-    expectedType: parent1.type.name,
-    expectedTraits: Array.from(new Set([...parent1.type.traits, ...parent2.type.traits])).slice(0, 4),
-    expectedStats,
-  };
-}
 
 export default function BreedingPage() {
   const kemonomimi = useGameStore(s => s.kemonomimi);
@@ -30,19 +16,14 @@ export default function BreedingPage() {
   const breedingQueue = useGameStore(s => s.breedingQueue);
   const startBreeding = useGameStore(s => s.startBreeding);
   const lastDayLogs = useGameStore(s => s.lastDayLogs);
+  const preview = useGameStore(s => s.breedingPreview);
 
   const [message, setMessage] = useState('');
+  const [isStarting, setIsStarting] = useState(false);
 
   const availableKemonomimi = kemonomimi.filter(k => k.status === 'available');
   const parent1 = kemonomimi.find(k => k.id === selectedParent1) || null;
   const parent2 = kemonomimi.find(k => k.id === selectedParent2) || null;
-
-  const preview = useMemo(() => {
-    if (!parent1 || !parent2) {
-      return null;
-    }
-    return createBreedingPreview(parent1, parent2);
-  }, [parent1, parent2]);
 
   const getKemonomimiName = (id: number) => {
     return kemonomimi.find(item => item.id === id)?.name ?? `ID ${id}`;
@@ -63,7 +44,7 @@ export default function BreedingPage() {
     setSelectedParent2(null);
   };
 
-  const handleStartBreeding = () => {
+  const handleStartBreeding = async () => {
     if (!parent1 || !parent2) {
       setMessage('Select two available kemonomimi to start breeding.');
       return;
@@ -74,8 +55,13 @@ export default function BreedingPage() {
       return;
     }
 
-    const result = startBreeding(parent1.id, parent2.id);
-    setMessage(result.message ?? (result.success ? 'Breeding started.' : 'Could not start breeding.'));
+    setIsStarting(true);
+    try {
+      const result = await startBreeding(parent1.id, parent2.id);
+      setMessage(result.message ?? (result.success ? 'Breeding started.' : 'Could not start breeding.'));
+    } finally {
+      setIsStarting(false);
+    }
   };
 
   return (
@@ -115,10 +101,10 @@ export default function BreedingPage() {
           <div className="flex flex-col items-center gap-2">
             <button
               className="btn btn--primary bg-primary text-white px-4 py-2 rounded disabled:opacity-50"
-              disabled={!parent1 || !parent2 || coins < BREEDING_COST}
+              disabled={!parent1 || !parent2 || coins < BREEDING_COST || isStarting}
               onClick={handleStartBreeding}
             >
-              Start Breeding
+              {isStarting ? 'Starting...' : 'Start Breeding'}
             </button>
             <p className="text-xs text-gray-500">Cost: {BREEDING_COST} coins</p>
           </div>
